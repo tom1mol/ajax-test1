@@ -61,7 +61,9 @@ function writeToDocument(url) {                //type = people, planets, species
             //el.innerHTML += "<p>" + item.name + "</p>";
         });
         
-        el.innerHTML = `<table>${tableHeaders}${tableRows}</table>${pagination}`;
+        el.innerHTML = `<table>${tableHeaders}${tableRows}</table>${pagination}`.replace(/,/g, "");
+                            //.replace(/,/g, "") gets rid of commas at top of page
+                            //arrays treated as strings the commas that seperate the values are also treated as part of that string
     });
 }
 //previous version that did individual lists per button
