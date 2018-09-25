@@ -3,8 +3,7 @@ const baseURL = "https://swapi.co/api/";
 function getData(type, cb) {
     var xhr = new XMLHttpRequest();
     
-    xhr.open("GET", baseURL + type + "/");
-    xhr.send();
+    
     
     xhr.onreadystatechange = function() {           //xhr object maintains an internal state as it completes various parts of the request operation
         if (this.readyState == 4 && this.status == 200) {
@@ -12,6 +11,9 @@ function getData(type, cb) {
             
         }
     };
+    
+    xhr.open("GET", baseURL + type + "/");
+    xhr.send();
 }
 
 function getTableHeaders(obj) {
@@ -27,7 +29,7 @@ function getTableHeaders(obj) {
 function writeToDocument(type) {                //type = people, planets, species etc.
     var tableRows = [];                     //will house each row of data
     var el = document.getElementById("data");
-    el.innerHTML = "";                          //"" = empty string
+    //el.innerHTML = "";                          //"" = empty string
     
     getData(type, function(data) {
         data = data.results;
@@ -36,10 +38,14 @@ function writeToDocument(type) {                //type = people, planets, specie
         data.forEach(function(item) {
            var dataRow = [];
                                 //new row for each object in data array
+                                
            Object.keys(item).forEach(function(key) {
-               dataRow.push(`<td>?${item[key]}</td>`)        //new <td> element for each item
-           })
-           tableRows.push(dataRow);
+               var rowData = item[key].toString();  //truncate info thats inserted into td element.shorten strings.less space on page
+                            //above..new variable rowData and setting it = string
+               var truncatedData = rowData.substring(0, 15);             //substring frow 0 index of string to 15 index of string
+               dataRow.push(`<td>${truncatedData}</td>`);        //new <td> element for each item
+           });
+           tableRows.push(`<tr>${dataRow}</tr>`);         // each row gets rendered as a tablerow
             //el.innerHTML += "<p>" + item.name + "</p>";
         });
         
